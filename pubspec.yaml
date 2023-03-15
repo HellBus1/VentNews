@@ -1,4 +1,4 @@
-name: vent_game
+name: vent_news
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -30,7 +30,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  # http request package
+  dio: ^5.0.2
+  # class locator (dependency injection)
+  get_it: ^7.2.0
+  # 
+  retrofit: '>=4.0.0 <5.0.0'
+  # 
+  logger: any
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -46,6 +53,16 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  # Mocking test object purpose
+  mockito: ^5.3.2
+  # 
+  retrofit_generator: '>=5.0.0 <6.0.0'
+  # 
+  build_runner:
+  # 
+  json_serializable:
+  #
+  provider:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
