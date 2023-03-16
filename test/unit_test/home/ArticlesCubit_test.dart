@@ -2,14 +2,14 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:vent_news/commons/resources/DataState.dart';
 import 'package:vent_news/data/NewsRepository.dart';
 import 'package:vent_news/data/model/response/Article.dart';
 import 'package:vent_news/data/model/response/BreakingNewsResult.dart';
-import 'package:vent_news/feature/home/cubits/article/ArticlesCubit.dart';
-import 'package:vent_news/feature/home/cubits/article/ArticlesState.dart';
+import 'package:vent_news/feature/home/cubits/ArticlesCubit.dart';
+import 'package:vent_news/feature/home/cubits/ArticlesState.dart';
+import 'package:vent_news/utils/resources/DataState.dart';
 
-import 'ArticlesCubitShould.mocks.dart';
+import 'ArticlesCubit_test.mocks.dart';
 
 @GenerateMocks([NewsRepository])
 void main() {
@@ -32,11 +32,13 @@ void main() {
     articlesCubit.close();
   });
 
+  // Stub success case
   mockSuccessfulCase() async {
     when(repository.fetchPaginatedBreakingNews(request: anyNamed('request')))
         .thenAnswer((_) async => expected);
   }
 
+  // Stub error case
   mockFailureCase() async {
     when(repository.fetchPaginatedBreakingNews(request: anyNamed('request')))
         .thenAnswer((_) async => DataFailed(Exception('Something went wrong')));

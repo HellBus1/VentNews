@@ -3,7 +3,7 @@ import 'dart:io' show HttpStatus;
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:vent_news/commons/resources/DataState.dart';
+import 'package:vent_news/utils/resources/DataState.dart';
 
 abstract class BaseApiRepository {
   /// This method is responsible of handling the given `request`, in which

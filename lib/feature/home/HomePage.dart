@@ -1,13 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:vent_news/data/model/response/Article.dart';
-import 'package:vent_news/feature/home/cubits/article/ArticlesCubit.dart';
-import 'package:vent_news/feature/home/cubits/article/ArticlesState.dart';
+import 'package:vent_news/feature/home/cubits/ArticlesCubit.dart';
+import 'package:vent_news/feature/home/cubits/ArticlesState.dart';
+import 'package:vent_news/feature/home/widgets/tile/NewsTile.dart';
+import 'package:vent_news/utils/extensions/scroll_controller.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final articleCubit = BlocProvider.of<ArticlesCubit>(context);
+    final scrollController = useScrollController();
+
+    useEffect(() {
+      scrollController.onScrollEndsListener(() {
+        articleCubit.getBreakingNewsArticles();
+      });
+
+      return scrollController.dispose;
+    }, const []);
+
     return BlocBuilder<ArticlesCubit, ArticlesState>(
       builder: (_, state) {
         switch (state.runtimeType) {
@@ -17,9 +31,13 @@ class HomePage extends StatelessWidget {
             return const Center(child: Icon(Icons.refresh));
           case ArticlesSuccess:
             return Scaffold(
-              body: _buildArticles(
-                state.articles,
-                state.noMoreData,
+              appBar: AppBar(centerTitle: true, title: Text("Vent News")),
+              body: SafeArea(
+                child: _buildArticles(
+                  scrollController,
+                  state.articles,
+                  state.noMoreData,
+                ),
               ),
             );
           default:
@@ -30,24 +48,22 @@ class HomePage extends StatelessWidget {
   }
 
   _buildArticles(
+    ScrollController scrollController,
     List<Article> articles,
     bool noMoreData,
   ) {
     return CustomScrollView(
-      // controller: scrollController,
+      controller: scrollController,
       slivers: [
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               var data = articles[index];
-              return Container(
-                child: Column(
-                  children: [
-                    Text(data.title),
-                    Text(data.description),
-                  ],
-                ),
-              );
+              if (index.isEven) {
+                return NewsTile(article: data, onTap: () {});
+              }
+
+              return Divider();
             },
             childCount: articles.length,
           ),

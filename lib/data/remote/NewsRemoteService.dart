@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:vent_news/commons/constans/strings.dart';
-import 'package:vent_news/data/model/response/Article.dart';
 import 'package:vent_news/data/model/response/BreakingNewsResult.dart';
+import 'package:vent_news/utils/constans/strings.dart';
 
 part 'NewsRemoteService.g.dart';
 

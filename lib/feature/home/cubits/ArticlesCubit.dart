@@ -1,10 +1,11 @@
-import 'package:vent_news/commons/constans/nums.dart';
-import 'package:vent_news/commons/resources/BaseCubits.dart';
-import 'package:vent_news/commons/resources/DataState.dart';
 import 'package:vent_news/data/NewsRepository.dart';
 import 'package:vent_news/data/model/request/BreakingNews.dart';
 import 'package:vent_news/data/model/response/Article.dart';
-import 'package:vent_news/feature/home/cubits/article/ArticlesState.dart';
+import 'package:vent_news/feature/home/cubits/ArticlesState.dart';
+import 'package:vent_news/utils/constans/nums.dart';
+import 'package:vent_news/utils/constans/strings.dart';
+import 'package:vent_news/utils/resources/BaseCubits.dart';
+import 'package:vent_news/utils/resources/DataState.dart';
 
 class ArticlesCubit extends BaseCubit<ArticlesState, List<Article>> {
   final NewsRepository repository;
@@ -18,7 +19,7 @@ class ArticlesCubit extends BaseCubit<ArticlesState, List<Article>> {
 
     await run(() async {
       final response = await repository.fetchPaginatedBreakingNews(
-        request: BreakingNews(page: _page),
+        request: BreakingNews(page: _page, apiKey: defaultApiKey),
       );
 
       if (response is DataSuccess) {

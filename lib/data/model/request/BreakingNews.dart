@@ -1,5 +1,4 @@
-import 'package:vent_news/commons/constans/nums.dart';
-import 'package:vent_news/commons/constans/strings.dart';
+import 'package:vent_news/utils/constans/nums.dart';
 
 class BreakingNews {
   final String apiKey;
@@ -8,7 +7,7 @@ class BreakingNews {
   final int pageSize;
 
   BreakingNews({
-    this.apiKey = defaultApiKey,
+    this.apiKey = "",
     this.sources = 'bbc-news, abc-news',
     this.page = 1,
     this.pageSize = defaultPageSize,

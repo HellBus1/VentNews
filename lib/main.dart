@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vent_news/data/NewsRepository.dart';
 import 'package:vent_news/feature/home/HomePage.dart';
-import 'package:vent_news/feature/home/cubits/article/ArticlesCubit.dart';
+import 'package:vent_news/feature/home/cubits/ArticlesCubit.dart';
 import 'package:vent_news/locator.dart';
 
 Future<void> main() async {
   await initializeDependencies();
+  await dotenv.load(fileName: ".env");
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -16,9 +19,8 @@ Future<void> main() async {
           )..getBreakingNewsArticles(),
         )
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
-    // MyApp()
   );
 }
 

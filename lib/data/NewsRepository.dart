@@ -1,8 +1,8 @@
-import 'package:vent_news/commons/resources/DataState.dart';
 import 'package:vent_news/data/base/BaseApiRepository.dart';
 import 'package:vent_news/data/model/request/BreakingNews.dart';
 import 'package:vent_news/data/model/response/BreakingNewsResult.dart';
 import 'package:vent_news/data/remote/NewsRemoteService.dart';
+import 'package:vent_news/utils/resources/DataState.dart';
 
 class NewsRepository extends BaseApiRepository {
   NewsRemoteService service;
