@@ -1,4 +1,4 @@
-# vent_game
+# vent_news
 
 A new Flutter project.
 
