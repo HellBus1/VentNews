@@ -28,7 +28,8 @@ class Article {
         description: json["description"] ?? "",
         url: json["url"] ?? "",
         urlToImage: json["urlToImage"] ?? "",
-        publishedAt: DateTime.parse(json["publishedAt"] ?? "15/3/2023"),
+        publishedAt:
+            DateTime.parse(json["publishedAt"] ?? "2021-12-23 11:47:00"),
         content: json["content"] ?? "",
       );
 

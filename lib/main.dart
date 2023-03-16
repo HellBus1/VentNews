@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vent_news/data/NewsRepository.dart';
 import 'package:vent_news/feature/home/HomePage.dart';
-import 'package:vent_news/feature/home/provider/HomePageProvider.dart';
+import 'package:vent_news/feature/home/cubits/article/ArticlesCubit.dart';
 import 'package:vent_news/locator.dart';
 
 Future<void> main() async {
   await initializeDependencies();
   runApp(
-    MultiProvider(
+    MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(
-            create: (context) => HomePageProvider(locator<NewsRepository>())),
+        BlocProvider(
+          create: (context) => ArticlesCubit(
+            locator<NewsRepository>(),
+          )..getBreakingNewsArticles(),
+        )
       ],
       child: MyApp(),
     ),

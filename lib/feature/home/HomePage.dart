@@ -1,49 +1,65 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:vent_news/commons/resources/DataState.dart';
-import 'package:vent_news/feature/home/provider/HomePageProvider.dart';
-
-import '../../data/model/response/BreakingNewsResult.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vent_news/data/model/response/Article.dart';
+import 'package:vent_news/feature/home/cubits/article/ArticlesCubit.dart';
+import 'package:vent_news/feature/home/cubits/article/ArticlesState.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomePageProvider>(
-      builder: (context, value, child) {
-        value.getNotePaginatedStream();
-        return StreamBuilder<DataState<BreakingNewsResult>>(
-            stream: value.gameListStream,
-            builder: (context, snapshot) {
-              return Scaffold(
-                body: renderBodyAfterSnapshot(snapshot),
-              );
-            });
+    return BlocBuilder<ArticlesCubit, ArticlesState>(
+      builder: (_, state) {
+        switch (state.runtimeType) {
+          case ArticlesLoading:
+            return const Center(child: CupertinoActivityIndicator());
+          case ArticlesFailed:
+            return const Center(child: Icon(Icons.refresh));
+          case ArticlesSuccess:
+            return Scaffold(
+              body: _buildArticles(
+                state.articles,
+                state.noMoreData,
+              ),
+            );
+          default:
+            return const SizedBox();
+        }
       },
     );
   }
 
-  renderBodyAfterSnapshot(snapshot) {
-    if (snapshot.hasData) {
-      if (snapshot.data is DataFailed) {
-        final error = (snapshot.data as DataFailed).error;
-        return Text('Error: $error');
-      } else if (snapshot.data is DataSuccess) {
-        final result = snapshot.data?.data;
-        final articles = result?.articles ?? [];
-        // Render the game list using `gameList`.
-        return ListView.builder(
-          itemCount: result?.totalResults,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(articles[index].title),
-              subtitle: Text(articles[index].description),
-            );
-          },
-        );
-      }
-    }
-
-    // By default, show a loading indicator.
-    return CircularProgressIndicator();
+  _buildArticles(
+    List<Article> articles,
+    bool noMoreData,
+  ) {
+    return CustomScrollView(
+      // controller: scrollController,
+      slivers: [
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              var data = articles[index];
+              return Container(
+                child: Column(
+                  children: [
+                    Text(data.title),
+                    Text(data.description),
+                  ],
+                ),
+              );
+            },
+            childCount: articles.length,
+          ),
+        ),
+        if (!noMoreData)
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.only(top: 14, bottom: 32),
+              child: CupertinoActivityIndicator(),
+            ),
+          )
+      ],
+    );
   }
 }
