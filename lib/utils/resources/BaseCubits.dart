@@ -9,15 +9,14 @@ abstract class BaseCubit<S, T> extends Cubit<S> {
   @protected
   T get data => _data;
 
-  bool _isBusy = false;
-  bool get isBusy => _isBusy;
+  bool isBusy = false;
 
   @protected
   Future<void> run(Future<void> Function() process) async {
-    if (!_isBusy) {
-      _isBusy = true;
+    if (!isBusy) {
+      isBusy = true;
       await process();
-      _isBusy = false;
+      isBusy = false;
     }
   }
 }

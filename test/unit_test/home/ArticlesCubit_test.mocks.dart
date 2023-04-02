@@ -7,9 +7,9 @@ import 'dart:async' as _i5;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:retrofit/retrofit.dart' as _i8;
-import 'package:vent_news/data/NewsRepository.dart' as _i4;
 import 'package:vent_news/data/model/request/BreakingNews.dart' as _i7;
 import 'package:vent_news/data/model/response/BreakingNewsResult.dart' as _i6;
+import 'package:vent_news/data/NewsRepository.dart' as _i4;
 import 'package:vent_news/data/remote/NewsRemoteService.dart' as _i2;
 import 'package:vent_news/utils/resources/DataState.dart' as _i3;
 

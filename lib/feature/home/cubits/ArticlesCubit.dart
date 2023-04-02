@@ -12,22 +12,22 @@ class ArticlesCubit extends BaseCubit<ArticlesState, List<Article>> {
 
   ArticlesCubit(this.repository) : super(const ArticlesLoading(), []);
 
-  int _page = 1;
+  int page = 1;
 
   Future<void> getBreakingNewsArticles() async {
     if (isBusy) return;
 
     await run(() async {
       final response = await repository.fetchPaginatedBreakingNews(
-        request: BreakingNews(page: _page, apiKey: defaultApiKey),
+        request: BreakingNews(page: page, apiKey: defaultApiKey),
       );
 
       if (response is DataSuccess) {
-        final articles = response.data!.articles;
+        final articles = response.data?.articles ?? [];
         final noMoreData = articles.length < defaultPageSize;
 
         data.addAll(articles);
-        _page++;
+        page++;
 
         emit(ArticlesSuccess(articles: data, noMoreData: noMoreData));
       } else if (response is DataFailed) {
