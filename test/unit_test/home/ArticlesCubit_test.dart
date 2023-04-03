@@ -96,6 +96,14 @@ void main() {
       expect(articlesCubit.state, const ArticlesLoading());
     });
 
+    test('call repository fetchPaginatedBreakingNews', () async {
+      mockSuccessfulCase();
+
+      await articlesCubit.getBreakingNewsArticles();
+
+      verify(repository.fetchPaginatedBreakingNews(request: anyNamed('request'))).called(1);
+    });
+
     test('increment page state when fetch data', () async {
       mockSuccessfulCase();
 
