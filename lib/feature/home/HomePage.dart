@@ -6,20 +6,30 @@ import 'package:vent_news/data/model/response/Article.dart';
 import 'package:vent_news/feature/home/cubits/ArticlesCubit.dart';
 import 'package:vent_news/feature/home/cubits/ArticlesState.dart';
 import 'package:vent_news/feature/home/widgets/tile/NewsTile.dart';
+import 'package:vent_news/feature/widgets/CustomScaffold.dart';
 import 'package:vent_news/utils/extensions/scroll_controller.dart';
 
 class HomePage extends HookWidget {
+  const HomePage({ Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final articleCubit = BlocProvider.of<ArticlesCubit>(context);
     final scrollController = useScrollController();
 
     useEffect(() {
-      scrollController.onScrollEndsListener(() {
-        articleCubit.getBreakingNewsArticles();
-      });
+      scrollListener() {
+        if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+            !scrollController.position.outOfRange) {
+          articleCubit.getBreakingNewsArticles();
+        }
+      }
 
-      return scrollController.dispose;
+      scrollController.addListener(scrollListener);
+
+      return () {
+        scrollController.removeListener(scrollListener);
+      };
     }, const []);
 
     return BlocBuilder<ArticlesCubit, ArticlesState>(
@@ -30,16 +40,13 @@ class HomePage extends HookWidget {
           case ArticlesFailed:
             return const Center(child: Icon(Icons.refresh));
           case ArticlesSuccess:
-            return Scaffold(
-              appBar: AppBar(centerTitle: true, title: Text("Vent News")),
-              body: SafeArea(
-                child: _buildArticles(
+            return CustomScaffold(
+              body: _buildArticles(
                   scrollController,
                   state.articles,
                   state.noMoreData,
-                ),
-              ),
-            );
+                )
+              );
           default:
             return const SizedBox();
         }
@@ -55,17 +62,22 @@ class HomePage extends HookWidget {
     return CustomScrollView(
       controller: scrollController,
       slivers: [
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              var data = articles[index];
-              if (index.isEven) {
-                return NewsTile(article: data, onTap: () {});
-              }
+        SliverPadding(
+          padding: EdgeInsets.only(top: 16, bottom: 16),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                var data = articles[index];
+                if (index.isEven) {
+                  return NewsTile(article: data, onTap: () {});
+                }
 
-              return Divider();
-            },
-            childCount: articles.length,
+                if (index != articles.length - 1) {
+                  return const Divider();
+                }
+              },
+              childCount: articles.length,
+            ),
           ),
         ),
         if (!noMoreData)

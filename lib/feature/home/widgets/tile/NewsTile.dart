@@ -10,30 +10,57 @@ class NewsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CachedNetworkImage(
-        imageUrl: article.urlToImage,
-        progressIndicatorBuilder: (context, url, downloadProgress) =>
-            CircularProgressIndicator(value: downloadProgress.progress),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-      ),
-      title: Text(
-        article.title,
-        style: const TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-        ),
-      ),
-      subtitle: Text(
-        article.description,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
-        ),
-      ),
-      onTap: onTap(),
-    );
+    return InkWell(
+        onTap: () {
+          onTap();
+        },
+        child: Row(
+          children: [
+            const SizedBox(width: 10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: CachedNetworkImage(
+                imageUrl: article.urlToImage,
+                height: 76,
+                width: 76,
+                fit: BoxFit.cover,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: CircularProgressIndicator(value: downloadProgress.progress),
+                    ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    article.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    article.author,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 }
