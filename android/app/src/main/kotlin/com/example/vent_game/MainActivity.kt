@@ -1,4 +1,4 @@
-package com.example.vent_game
+package com.example.vent_news
 
 import io.flutter.embedding.android.FlutterActivity
 

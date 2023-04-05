@@ -6,11 +6,12 @@ import 'package:vent_news/data/model/response/Article.dart';
 import 'package:vent_news/feature/home/cubits/ArticlesCubit.dart';
 import 'package:vent_news/feature/home/cubits/ArticlesState.dart';
 import 'package:vent_news/feature/home/widgets/tile/NewsTile.dart';
-import 'package:vent_news/feature/widgets/CustomScaffold.dart';
+import 'package:vent_news/feature/overview/OverviewPage.dart';
+import 'package:vent_news/widgets/CustomScaffold.dart';
 import 'package:vent_news/utils/extensions/scroll_controller.dart';
 
 class HomePage extends HookWidget {
-  const HomePage({ Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,8 @@ class HomePage extends HookWidget {
 
     useEffect(() {
       scrollListener() {
-        if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        if (scrollController.offset >=
+                scrollController.position.maxScrollExtent &&
             !scrollController.position.outOfRange) {
           articleCubit.getBreakingNewsArticles();
         }
@@ -41,12 +43,11 @@ class HomePage extends HookWidget {
             return const Center(child: Icon(Icons.refresh));
           case ArticlesSuccess:
             return CustomScaffold(
-              body: _buildArticles(
-                  scrollController,
-                  state.articles,
-                  state.noMoreData,
-                )
-              );
+                body: _buildArticles(
+              scrollController,
+              state.articles,
+              state.noMoreData,
+            ));
           default:
             return const SizedBox();
         }
@@ -62,22 +63,27 @@ class HomePage extends HookWidget {
     return CustomScrollView(
       controller: scrollController,
       slivers: [
-        SliverPadding(
-          padding: EdgeInsets.only(top: 16, bottom: 16),
-          sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                var data = articles[index];
-                if (index.isEven) {
-                  return NewsTile(article: data, onTap: () {});
-                }
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              var data = articles[index];
+              if (index.isEven) {
+                return NewsTile(
+                    article: data,
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => OverviewPage(article: data),
+                        ),
+                      );
+                    });
+              }
 
-                if (index != articles.length - 1) {
-                  return const Divider();
-                }
-              },
-              childCount: articles.length,
-            ),
+              if (index != articles.length - 1) {
+                return const Divider();
+              }
+            },
+            childCount: articles.length,
           ),
         ),
         if (!noMoreData)

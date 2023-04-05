@@ -34,20 +34,15 @@ dependencies:
   dio: ^5.0.2
   # class locator (dependency injection)
   get_it: ^7.2.0
-  # 
   retrofit: '>=4.0.0 <5.0.0'
-  # 
   logger: any
-  #
   flutter_bloc: ^8.1.2
-  # 
   equatable: ^2.0.5
-  #
   flutter_dotenv: ^5.0.2
-  # 
   flutter_hooks: ^0.18.6
-  # 
   google_fonts: ^2.1.0
+  intl: ^0.17.0
+  webview_flutter: ^4.0.7
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

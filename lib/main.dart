@@ -43,7 +43,8 @@ class MyApp extends StatelessWidget {
         bottomNavigationBarTheme: bottomNavigationBarTheme,
       ),
       initialRoute: '/',
-      routes: {'/': (context) => const MainPage()},
+      routes: {
+        '/': (context) => const MainPage()},
     );
   }
 }

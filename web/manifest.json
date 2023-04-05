@@ -1,6 +1,6 @@
 {
-    "name": "vent_game",
-    "short_name": "vent_game",
+    "name": "vent_news",
+    "short_name": "vent_news",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
